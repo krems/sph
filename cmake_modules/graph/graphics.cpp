@@ -36,7 +36,7 @@ void Graphics::buildShapeFromParticle(sf::CircleShape &shape, const Particle &p)
     shape.setPosition((float) (X_SIZE - p.coord.x), (float) (Y_SIZE - p.coord.y));
 }
 
-void Graphics::update_data(const std::vector<Particle *> *particles) {
+void Graphics::update_data(const vector<Particle *> *particles) {
     this->particles = particles;
 }
 

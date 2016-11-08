@@ -39,18 +39,18 @@ void SPH::compute_next_state(const vector<Particle*> *particles, vector<Particle
 }
 
 vector<Particle*> *SPH::generate_particles(int particle_count) const {
-    double X1_WALL = BOUND_X + 25;
+    double X1_WALL = BOUND_X + 200;
     vector<Particle*> *_particles = new vector<Particle*>();
     double x = BOUND_X + 2;
     double y = BOUND_Y + 2;
     for (int i = 0; i < particle_count; ++i) {
         if (x >= X1_WALL - 2) {
-            x = BOUND_X + 1;
-            y++;
+            x = BOUND_X + 2;
+            y += 3;
         }
         Particle* particle = new Particle(x, y, 0., 0., 1.);
         _particles->push_back(particle);
-        x += 2;
+        x += 5;
     }
     return _particles;
 }
