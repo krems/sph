@@ -8,6 +8,11 @@ SPH::SPH(double xb, double yb, double xs, double ys) : BOUND_X(xb), BOUND_Y(yb),
 void SPH::compute_next_state(const vector<Particle*> *particles, vector<Particle*> *result) const {
     for (auto it = particles->cbegin(); it != particles->cend(); ++it) {
         const Particle &subj = **it;
+        if (subj.type == Particle::Wall) {
+            Particle* new_particle = new Particle(subj);
+            result->push_back(new_particle);
+            continue;
+        }
         double rho = 1.;
         b2Vec2 dp(0.f, 0.f);
         b2Vec2 visc(0.f, 0.f);
@@ -39,8 +44,14 @@ void SPH::compute_next_state(const vector<Particle*> *particles, vector<Particle
 }
 
 vector<Particle*> *SPH::generate_particles(int particle_count) const {
-    double X1_WALL = BOUND_X + 200;
     vector<Particle*> *_particles = new vector<Particle*>();
+    build_wall_particles(_particles);
+    build_movable_particles(particle_count, _particles);
+    return _particles;
+}
+
+void SPH::build_movable_particles(int particle_count, vector<Particle *> *_particles) const {
+    double X1_WALL = BOUND_X + 200;
     double x = BOUND_X + 2;
     double y = BOUND_Y + 2;
     for (int i = 0; i < particle_count; ++i) {
@@ -52,5 +63,35 @@ vector<Particle*> *SPH::generate_particles(int particle_count) const {
         _particles->push_back(particle);
         x += 5;
     }
-    return _particles;
+}
+
+void SPH::build_wall_particles(vector<Particle *> *_particles) const {
+    double x = BOUND_X;
+    double y = BOUND_Y;
+    while (x <= X_SIZE) {
+        Particle* particle = new Particle(x, y);
+        _particles->push_back(particle);
+        ++x;
+    }
+    x = BOUND_X;
+    y = Y_SIZE;
+    while (x <= X_SIZE) {
+        Particle* particle = new Particle(x, y);
+        _particles->push_back(particle);
+        ++x;
+    }
+    x = BOUND_X;
+    y = BOUND_Y + 1;
+    while (y < Y_SIZE) {
+        Particle* particle = new Particle(x, y);
+        _particles->push_back(particle);
+        ++y;
+    }
+    x = X_SIZE;
+    y = BOUND_Y + 1;
+    while (y < Y_SIZE) {
+        Particle* particle = new Particle(x, y);
+        _particles->push_back(particle);
+        ++y;
+    }
 }

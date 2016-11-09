@@ -34,6 +34,15 @@ void Graphics::buildShapeFromParticle(sf::CircleShape &shape, const Particle &p)
     shape.setRadius(5);
     shape.setOutlineThickness(0);
     shape.setPosition((float) (X_SIZE - p.coord.x), (float) (Y_SIZE - p.coord.y));
+    shape.setFillColor(getColor(p));
+}
+
+const sf::Color &Graphics::getColor(const Particle &p) const {
+    if (p.type == Particle::Movable) {
+        return sf::Color::Blue;
+    } else {
+        return sf::Color::Magenta;
+    }
 }
 
 void Graphics::update_data(const vector<Particle *> *particles) {
@@ -63,7 +72,7 @@ bool Graphics::gui_main_loop() {
 //                        draw_pressure(window, p);
 //                    }
     }
-    draw_borders(window);
+//    draw_borders(window);
     window.display();
     return window.isOpen();
 }

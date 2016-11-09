@@ -74,24 +74,16 @@ public:
 
 private:
     double xwall_pressure(const Particle &subj) const {
-        if (subj.coord.x - BOUND_X < rest_dist) {
-            return subj.m * (rest_dist - (subj.coord.x - BOUND_X)) / dt_sq;
-        }
-        if (X_SIZE - BOUND_X - subj.coord.x < rest_dist) {
-            return -subj.m * (rest_dist - (X_SIZE - BOUND_X - subj.coord.x)) / dt_sq;
-        }
         return 0.;
     }
 
     double ywall_pressure(const Particle &subj) const {
-        if (subj.coord.y - BOUND_Y < rest_dist) {
-            return subj.m * (rest_dist - (subj.coord.y - BOUND_Y)) / dt_sq;
-        }
-        if (Y_SIZE - BOUND_Y - subj.coord.y < rest_dist) {
-            return -subj.m * (rest_dist - (Y_SIZE - BOUND_Y - subj.coord.y)) / dt_sq;
-        }
         return 0.;
     }
+
+    void build_movable_particles(int particle_count, vector<Particle *> *_particles) const;
+
+    void build_wall_particles(vector<Particle *> *pVector) const;
 };
 
 #endif //SPH_SPH_H

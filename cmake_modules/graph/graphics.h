@@ -25,6 +25,8 @@ public:
     void update_data(const std::vector<Particle*> *particles);
 
     bool gui_main_loop();
+
+    const sf::Color &getColor(const Particle &p) const;
 };
 
 #endif //SPH_GRAPHICS_H

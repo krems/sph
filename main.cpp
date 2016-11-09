@@ -25,7 +25,7 @@ using std::vector;
 int main(int argc, char *argv[]) {
     SPH sph(BORDER_X, BORDER_Y, X_SIZE, Y_SIZE);
     Graphics grp(BORDER_X, BORDER_Y, X_SIZE, Y_SIZE);
-    vector<Particle*> *particles = sph.generate_particles(1000);
+    vector<Particle*> *particles = sph.generate_particles(500);
     vector<Particle*> *particles2 = new vector<Particle*>();
     grp.update_data(particles);
     while (true) {
