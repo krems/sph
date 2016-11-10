@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
         if (!continuee) {
             break;
         }
-        usleep(16);
+//        usleep(16);
     }
     delete particles;
     for (Particle* p : *particles2) {

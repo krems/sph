@@ -8,7 +8,7 @@ using std::vector;
 
 
 static const double pi = 3.1415;
-static const double dt = 0.1;
+static const double dt = 0.08;
 static const double dt_sq = dt * dt;
 static const double h = 100.;
 static const double h_sq = h * h;
@@ -51,6 +51,9 @@ public:
     }
 
     static double ddw_visc(const Particle &subj, const Particle &neighbour) {
+        if (1) {
+            return 0;
+        }
         double dist_sq = subj.distance_squared(neighbour);
         if (dist_sq >= h_sq) {
             return 0.;
@@ -73,17 +76,11 @@ public:
     vector<Particle*> *generate_particles(int particle_count) const;
 
 private:
-    double xwall_pressure(const Particle &subj) const {
-        return 0.;
-    }
-
-    double ywall_pressure(const Particle &subj) const {
-        return 0.;
-    }
-
     void build_movable_particles(int particle_count, vector<Particle *> *_particles) const;
 
     void build_wall_particles(vector<Particle *> *pVector) const;
+
+    Particle *calcNewParticleState(const vector<Particle *> *particles, const Particle &subj) const;
 };
 
 #endif //SPH_SPH_H

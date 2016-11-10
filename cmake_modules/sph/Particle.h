@@ -9,8 +9,8 @@ struct Particle {
         Wall,
     };
 
-    explicit Particle(const b2Vec2 &coord, const b2Vec2 &veloc, const b2Vec2 &imp, double rho) :
-            coord(coord), veloc(veloc), imp(imp), rho(rho) {
+    explicit Particle(const b2Vec2 &coord, const b2Vec2 &veloc, double rho) :
+            coord(coord), veloc(veloc), rho(rho) {
         this->m = 1.;
         this->type = Movable;
     }
@@ -32,7 +32,6 @@ struct Particle {
 
     b2Vec2 coord;
     b2Vec2 veloc;
-    b2Vec2 imp;
     double rho;
     double m;
     Type type;

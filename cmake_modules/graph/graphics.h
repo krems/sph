@@ -18,8 +18,6 @@ class Graphics {
 public:
     Graphics(double xb, double yb, double xs, double ys);
 
-    void draw_borders(sf::RenderWindow &window) const;
-
     void buildShapeFromParticle(sf::CircleShape &shape, const Particle &p) const;
 
     void update_data(const std::vector<Particle*> *particles);

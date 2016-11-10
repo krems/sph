@@ -7,34 +7,13 @@ Graphics::Graphics(double xb, double yb, double xs, double ys) : BOUND_X(xb), BO
                                                                                       (unsigned int) (Y_SIZE)),
                                                                         "Water under gravity") {}
 
-void Graphics::draw_borders(sf::RenderWindow &window) const {
-    sf::RectangleShape rectangle(sf::Vector2f((float) (BOUND_X - 2.), (float) (Y_SIZE)));
-    rectangle.setPosition(0, 0);
-    rectangle.setFillColor(sf::Color::Cyan);
-    window.draw(rectangle);
-
-    sf::RectangleShape rectangle1(sf::Vector2f((float) (X_SIZE), (float) (BOUND_Y - 2)));
-    rectangle1.setPosition(0, 0);
-    rectangle1.setFillColor(sf::Color::Cyan);
-    window.draw(rectangle1);
-
-    sf::RectangleShape rectangle2(sf::Vector2f((float) (X_SIZE), (float) BOUND_Y));
-    rectangle2.setPosition(0, (float) (Y_SIZE - BOUND_Y + 2));
-    rectangle2.setFillColor(sf::Color::Cyan);
-    window.draw(rectangle2);
-
-    sf::RectangleShape rectangle3(sf::Vector2f((float) (X_SIZE), (float) (Y_SIZE)));
-    rectangle3.setPosition((float) (X_SIZE - BOUND_X + 2), (float) (BOUND_Y - 2));
-    rectangle3.setFillColor(sf::Color::Cyan);
-    window.draw(rectangle3);
-}
-
 
 void Graphics::buildShapeFromParticle(sf::CircleShape &shape, const Particle &p) const {
-    shape.setRadius(5);
-    shape.setOutlineThickness(0);
+    shape.setRadius(4);
+    shape.setOutlineThickness(1);
     shape.setPosition((float) (X_SIZE - p.coord.x), (float) (Y_SIZE - p.coord.y));
-    shape.setFillColor(getColor(p));
+    shape.setOutlineColor(getColor(p));
+    shape.setFillColor(sf::Color(*((unsigned int*) &p.rho)));
 }
 
 const sf::Color &Graphics::getColor(const Particle &p) const {
