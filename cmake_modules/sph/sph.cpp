@@ -16,33 +16,34 @@ Particle *SPH::calcNewParticleState(const vector<Particle *> *particles, const P
     if (subj.type == Particle::Wall) {
         return new Particle(subj);
     }
-    double drho = 1.;
+    b2Vec2 ext_forces(0, -gravity);
+    double drho = 0.;
     b2Vec2 f_pressure(0.f, 0.f);
     b2Vec2 visc(0.f, 0.f);
+
+    double subj_press = rest_press + gas_const * (subj.rho - rest_rho);
     for (auto it = particles->cbegin(); it != particles->cend(); ++it) {
         const Particle &n = **it;
         if (&n == &subj || subj.distance_squared(n) >= h) {
             continue;
         }
 
-        drho += n.m * Kernel::w_rho(subj, n);
+        drho -= n.m * b2Dot((n.veloc - subj.veloc), Kernel::gradw(subj, n));
 
-        double subj_press = rest_press + gas_const * (subj.rho - rest_rho);
         double n_press = rest_press + gas_const * (n.rho - rest_rho);
-        f_pressure -= Kernel::dw_pressure(subj, n) * n.m * (subj_press + n_press) / (2. * n.rho);
+        f_pressure -= Kernel::gradw(subj, n) * n.m * (subj_press / (subj.rho * subj.rho) + n_press / (n.rho * n.rho));
 
-        double dd_visc_ker = Kernel::ddw_visc(subj, n);
+        double dd_visc_ker = Kernel::dw(subj, n);
         visc += (n.veloc - subj.veloc) * n.m * dd_visc_ker / n.rho;
     }
     visc *= mu_visc;
 
-//    double rho = subj.rho + dt * drho;
-    b2Vec2 ext_forces(0, -gravity);
+    double rho = subj.rho + dt * drho;
     b2Vec2 acceleration = visc + f_pressure + ext_forces;
-    b2Vec2 nveloc(subj.veloc + acceleration * dt);
-    b2Vec2 ncoord(subj.coord + dt * (nveloc + acceleration * dt / 2.));
+    b2Vec2 nveloc = subj.veloc + acceleration * dt;
+    b2Vec2 ncoord = subj.coord + dt * (nveloc + acceleration * dt / 2.);
 
-    Particle *new_particle = new Particle(ncoord, nveloc, drho);
+    Particle *new_particle = new Particle(ncoord, nveloc, rho);
     return new_particle;
 }
 
