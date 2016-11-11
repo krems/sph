@@ -11,6 +11,7 @@ endif()
 
 project(sph CXX)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # Set version information in a config.h file
 set(myproject_VERSION_MAJOR 1)
 set(myproject_VERSION_MINOR 0)
@@ -38,6 +39,7 @@ target_compile_features(sph PRIVATE cxx_range_for)
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package(Threads)
 #Find any version 2.X of SFML
 #See the FindSFML.cmake file for additional details and instructions
 find_package(SFML 2 REQUIRED system window graphics network audio)
@@ -57,3 +59,5 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_PACKAGE_VERSION_MAJOR "${myproject_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${myproject_VERSION_MINOR}")
 include(CPack)
+
+target_link_libraries(sph ${CMAKE_THREAD_LIBS_INIT})

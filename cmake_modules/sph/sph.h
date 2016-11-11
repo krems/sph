@@ -58,38 +58,11 @@ public:
         }
         if (x >= 1) {
             return b2Vec2(-3. * neighbour.coord.x * (2 - dist) * (2 - dist) / (4 * dist) / (pi * h * h * h),
-                          -3. * neighbour.coord.y * (2 - dist) * (2 - dist) / (4 * dist)) / (pi * h * h * h);
+                          -3. * neighbour.coord.y * (2 - dist) * (2 - dist) / (4 * dist) / (pi * h * h * h));
         }
         return b2Vec2(-3. * neighbour.coord.x + 9. / 4. * dist / (pi * h * h * h),
                       -3. * neighbour.coord.y + 9. / 4. * dist / (pi * h * h * h));
     }
-
-//    static double w_pressure(const Particle &subj, const Particle &neighbour) {
-//        double dist_sq = subj.distance_squared(neighbour);
-//        if (dist_sq >= h_sq || dist_sq == 0) {
-//            return 0., 0.;
-//        }
-//        double mul = 15. / (pi * pow(h, 6)) * pow((h - subj.distance(neighbour)), 3);
-//        return mul;
-//    }
-//
-//    static b2Vec2 dw_pressure(const Particle &subj, const Particle &neighbour) {
-//        double dist_sq = subj.distance_squared(neighbour);
-//        if (dist_sq >= h_sq || dist_sq == 0) {
-//            return b2Vec2(0.f, 0.f);
-//        }
-//        double dist = subj.distance(neighbour);
-//        double mul = -15. * 3. / (pi * pow(h, 6)) * pow((h - dist), 2) / dist;
-//        return (subj.coord - neighbour.coord) * mul;
-//    }
-//
-//    static double ddw_visc(const Particle &subj, const Particle &neighbour) {
-//        double dist_sq = subj.distance_squared(neighbour);
-//        if (dist_sq >= h_sq) {
-//            return 0.;
-//        }
-//        return 45. / (pi * pow(h, 6)) * (h - subj.distance(neighbour));
-//    }
 };
 
 

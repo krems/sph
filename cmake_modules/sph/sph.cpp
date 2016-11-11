@@ -1,4 +1,5 @@
 #include <vector>
+#include <future>
 #include "sph.h"
 
 using std::vector;
@@ -6,9 +7,14 @@ using std::vector;
 SPH::SPH(double xb, double yb, double xs, double ys) : BOUND_X(xb), BOUND_Y(yb), X_SIZE(xs), Y_SIZE(ys) {}
 
 void SPH::compute_next_state(const vector<Particle *> *particles, vector<Particle *> *result) const {
+    vector<std::future<Particle*>> futures;
     for (auto it = particles->cbegin(); it != particles->cend(); ++it) {
-        Particle *new_particle = calcNewParticleState(particles, **it);
-        result->push_back(new_particle);
+        const Particle &p = **it;
+        futures.push_back(std::async(std::launch::async, [&particles, &p, this] (){ return calcNewParticleState(particles, p);}));
+    }
+    for (auto &f : futures) {
+        f.wait();
+        result->push_back(f.get());
     }
 }
 
