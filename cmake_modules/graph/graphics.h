@@ -25,6 +25,8 @@ public:
     bool gui_main_loop();
 
     const sf::Color &getColor(const Particle &p) const;
+
+    void draw_velocities(const Particle &p);
 };
 
 #endif //SPH_GRAPHICS_H

@@ -44,7 +44,7 @@ struct Particle {
         return b2Distance(this->coord, other.coord);
     }
 
-    bool is_movable() {
+    bool is_movable() const {
         return type == Movable;
     }
 };
