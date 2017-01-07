@@ -10,17 +10,16 @@ using std::vector;
 static const double pi = 3.1415;
 static const double dt = 0.05;
 static const double dt_sq = dt * dt;
-static const double h = 1000.;
+static const double h = 10.;
 static const double h_sq = h * h;
 static const double rest_dist = 1.5;
-static const double rest_press = 0.000;
+static const double rest_press = 1.;
 //static const double rest_press = 10.;
 static const double gas_const = 8.344 * 300 * 10e-5;
 static const double mu_visc = .0;
 //static const double mu_visc = .05;
 static const double gravity = 10.;
 static const double rest_rho = 1.0;
-//static const double rest_rho = 1.;
 
 static const double max_rho = 10e-5;
 

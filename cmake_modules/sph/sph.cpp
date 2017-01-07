@@ -100,7 +100,7 @@ void SPH::build_movable_particles(int particle_count, vector<Particle *> *_parti
 
 void SPH::build_wall_particles(vector<Particle *> *_particles) const {
     int layers = 10;
-    double step = 10.5;
+    double step = 4.;
     double x = BOUND_X;
     double y = BOUND_Y;
     for (int i = 0; i < layers; ++i) {

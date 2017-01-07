@@ -12,7 +12,7 @@ Graphics::Graphics(double xb, double yb, double xs, double ys) : BOUND_X(xb), BO
 
 void Graphics::buildShapeFromParticle(sf::CircleShape &shape, const Particle &p) const {
     shape.setRadius(4);
-    shape.setOutlineThickness(1);
+    shape.setOutlineThickness(2);
     shape.setPosition((float) (X_SIZE - p.coord.x), (float) (Y_SIZE - p.coord.y));
     shape.setOutlineColor(getColor(p));
     shape.setFillColor(sf::Color(*((unsigned int*) &p.rho)));
