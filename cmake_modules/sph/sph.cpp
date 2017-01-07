@@ -1,13 +1,21 @@
 #include <vector>
+#include <algorithm>
 #include "sph.h"
 
 using std::vector;
 
 SPH::SPH(double xb, double yb, double xs, double ys) : BOUND_X(xb), BOUND_Y(yb), X_SIZE(xs), Y_SIZE(ys) {}
 
-void SPH::compute_next_state(const vector<Particle *> *particles, vector<Particle *> *result) const {
-    for (auto it = particles->cbegin(); it != particles->cend(); ++it) {
-        Particle *new_particle = calcNewParticleState(particles, **it);
+bool compare_x(Particle* lhs, Particle* rhs) {
+    return lhs->coord.x < rhs->coord.x;
+}
+
+void SPH::compute_next_state(vector<Particle *> *particles, vector<Particle *> *result) const {
+    std::sort(particles->begin(), particles->end(), compare_x);
+    #pragma omp parallel for
+    for (size_t it = 0; it < particles->size(); ++it) {
+        Particle *new_particle = calcNewParticleState(particles, *(*particles)[it]);
+        #pragma omp critical
         result->push_back(new_particle);
     }
 }
@@ -19,8 +27,14 @@ Particle *SPH::calcNewParticleState(const vector<Particle *> *particles, const P
     double drho = 1.;
     b2Vec2 f_pressure(0.f, 0.f);
     b2Vec2 visc(0.f, 0.f);
-    for (auto it = particles->cbegin(); it != particles->cend(); ++it) {
+    Particle *tmp = new Particle(subj.coord.x - 2 * h, 0);
+    auto it = std::lower_bound(particles->cbegin(), particles->cend(), tmp, compare_x);
+    delete tmp;
+    for (; it != particles->cend(); ++it) {
         const Particle &n = **it;
+        if (subj.coord.x + 2 * h < n.coord.x) {
+            break;
+        }
         if (&n == &subj || subj.distance_squared(n) >= h) {
             continue;
         }
@@ -36,7 +50,6 @@ Particle *SPH::calcNewParticleState(const vector<Particle *> *particles, const P
     }
     visc *= mu_visc;
 
-//    double rho = subj.rho + dt * drho;
     b2Vec2 ext_forces(0, -gravity);
     b2Vec2 acceleration = visc + f_pressure + ext_forces;
     b2Vec2 nveloc(subj.veloc + acceleration * dt);

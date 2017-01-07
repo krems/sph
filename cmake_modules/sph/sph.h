@@ -71,7 +71,7 @@ class SPH {
 public:
     SPH(double xb, double yb, double xs, double ys);
 
-    void compute_next_state(const vector<Particle*> *particles, vector<Particle*> *result) const;
+    void compute_next_state(vector<Particle*> *particles, vector<Particle*> *result) const;
 
     vector<Particle*> *generate_particles(int particle_count) const;
 

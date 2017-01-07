@@ -11,6 +11,7 @@ endif()
 
 project(sph CXX)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp")
 # Set version information in a config.h file
 set(myproject_VERSION_MAJOR 1)
 set(myproject_VERSION_MINOR 0)

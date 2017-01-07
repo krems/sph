@@ -13,7 +13,8 @@ void Graphics::buildShapeFromParticle(sf::CircleShape &shape, const Particle &p)
     shape.setOutlineThickness(1);
     shape.setPosition((float) (X_SIZE - p.coord.x), (float) (Y_SIZE - p.coord.y));
     shape.setOutlineColor(getColor(p));
-    shape.setFillColor(sf::Color(*((unsigned int*) &p.rho)));
+    float color = (float) p.rho;
+    shape.setFillColor(sf::Color(*((unsigned int*) &color)));
 }
 
 const sf::Color &Graphics::getColor(const Particle &p) const {
@@ -47,11 +48,7 @@ bool Graphics::gui_main_loop() {
 //                    if (DRAW_VELOCITIES) {
 //                        draw_velocities(window, p);
 //                    }
-//                    if (DRAW_PRESSURE) {
-//                        draw_pressure(window, p);
-//                    }
     }
-//    draw_borders(window);
     window.display();
     return window.isOpen();
 }
